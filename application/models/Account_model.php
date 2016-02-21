@@ -4,7 +4,6 @@ class Account_model extends CI_Model {
 
 	public function __construc() {
 		parent::__construct();
-		
 	}
 
 	public function setAccount() {
@@ -29,6 +28,16 @@ class Account_model extends CI_Model {
 			'password'	=> sha1($this->input->post('password'))
 		);
 
-		return $this->db->get_where('accounts', $data);
+		$query = $this->db->get_where('accounts', $data);
+
+		if($query->num_rows() > 0) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function logoutAccount() {
+		// logout function
 	}
 }

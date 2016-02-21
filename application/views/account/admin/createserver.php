@@ -5,7 +5,7 @@
 <?php endif; ?>
 
 <?php echo validation_errors(); ?>
-<?php echo form_open('account/login') ?>
+<?php echo form_open('account/admin/createserver') ?>
     <label for="Email">Email : </label>
     <input type="email" name="email" /><br />
 

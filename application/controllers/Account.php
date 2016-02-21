@@ -3,12 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Account extends CI_controller {
 
+	public function __construct() {
+		parent::__construct();
+        $this->load->model('Account_model');
+	}
+
 	public function index() {
 		$this->load->view('home');
 	}
 
 	public function create() {
-		$this->load->model('Account_model');
 	    $this->load->helper('form');
 	    $this->load->library('form_validation');
 
@@ -28,7 +32,6 @@ class Account extends CI_controller {
 	}
 
 	public function login() {
-		$this->load->model('Account_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
@@ -40,13 +43,45 @@ class Account extends CI_controller {
 	    if ($this->form_validation->run() === FALSE) {
 	    	$this->load->view('account/login', $data);
 	    } else {
-	    	if($this->Account_model->loginAccount() == TRUE) {
+	    	if($this->Account_model->loginAccount() === TRUE) {
 	    		// $this->load->library('session');
 	    		// $session_data = array('email', $data['email']);
 	    		// $this->session->userdata($session_data);
-	    		$data['page_title'] = 'Account Administration - Home';
-	    		$this->load->view('account/admin/home');
+	    		$data['title_page'] = 'Account Administration - Home';
+	    		$this->load->view('account/admin/home',$data);
+	    	} else {
+	    		$data['error'] = 'Wrong Login or Password';
+	    		$this->load->view('account/login', $data);
 	    	}
 	    }
+	}
+
+	public function createServer() {
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$data['title_page'] = 'Register Server into System';
+
+		// $this->$this->form_validation->set_rules('fieldname', 'fieldlabel', 'trim|required|min_length[5]|max_length[12]');
+
+		$this->form_validation->set_rules('name', 'Name', 'required');
+		$this->form_validation->set_rules('title', 'Title', 'required');
+		$this->form_validation->set_rules('ip', 'IP', 'required');
+		$this->form_validation->set_rules('port', 'Port', 'required');
+		$this->form_validation->set_rules('version', 'Version', 'required');
+		$this->form_validation->set_rules('site', 'Site');
+		$this->form_validation->set_rules('description', 'Description', 'required');
+
+		if ($this->form_validation->run() === FALSE) {
+			$this->load->view('account/admin/createserver', $data);
+		} else {
+			if ($this->Account_model->createServer()) {
+				$data['sucess'] = 'Server OK!';
+				$this->load->view('account/admin/createserver', $data);
+			} else {
+				$data['error'] = 'Error on create server';
+				$this->load->view('account/admin/createserver', $data);
+			}
+		}
 	}
 }
