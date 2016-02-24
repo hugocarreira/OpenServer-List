@@ -61,6 +61,7 @@ class Account extends CI_controller {
 		$this->load->library('form_validation');
 
 		$data['title_page'] = 'Register Server into System';
+		$data['versions'] 	= $this->Account_model->getVersion();
 
 		// $this->$this->form_validation->set_rules('fieldname', 'fieldlabel', 'trim|required|min_length[5]|max_length[12]');
 
@@ -75,7 +76,7 @@ class Account extends CI_controller {
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('account/admin/createserver', $data);
 		} else {
-			if ($this->Account_model->createServer()) {
+			if ($this->Account_model->setServer()) {
 				$data['sucess'] = 'Server OK!';
 				$this->load->view('account/admin/createserver', $data);
 			} else {

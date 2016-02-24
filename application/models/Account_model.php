@@ -2,14 +2,12 @@
 
 class Account_model extends CI_Model {
 
-	public function __construc() {
+	public function __construct() {
 		parent::__construct();
+		$this->load->database();
 	}
 
 	public function setAccount() {
-		$this->load->database();
-	    $this->load->helper('url');
-
 	    $data = array(
 	        'name' 		=> $this->input->post('name'),
 	        'lastname' 	=> $this->input->post('lastname'),
@@ -21,7 +19,7 @@ class Account_model extends CI_Model {
 	}
 
 	public function loginAccount() {
-		$this->load->database();
+		
 
 		$data = array(
 			'email'		=> $this->input->post('email'),
@@ -39,5 +37,23 @@ class Account_model extends CI_Model {
 
 	public function logoutAccount() {
 		// logout function
+	}
+
+	public function setServer() {
+		$data = array(
+			'name'			=> $this->input->post('name'),
+			'title'			=> $this->input->post('title'),
+			'ip'			=> $this->input->post('ip'),
+			'port'			=> $this->input->post('port'),
+			'version'		=> $this->input->post('version'),
+			'site'			=> $this->input->post('site'),
+			'description'	=> $this->input->post('description')
+		);
+
+		return $this->db->insert('servers', $data);
+	}
+
+	public function getVersion() {
+		return $this->db->get('versions')->result();
 	}
 }
