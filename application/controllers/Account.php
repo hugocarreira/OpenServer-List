@@ -48,12 +48,26 @@ class Account extends CI_controller {
 	    		// $session_data = array('email', $data['email']);
 	    		// $this->session->userdata($session_data);
 	    		$data['title_page'] = 'Account Administration - Home';
+	    		$data['servers'] 	= $this->Account_model->getAllServers();
 	    		$this->load->view('account/admin/home',$data);
 	    	} else {
 	    		$data['error'] = 'Wrong Login or Password';
 	    		$this->load->view('account/login', $data);
 	    	}
 	    }
+	}
+
+	public function saveServer() {
+		$this->load->helper('form');
+		$this->load->libray('form_validation');
+
+		$id = $this->input->post('id');
+
+		if($id != '') {
+			$this->editServer($id);
+		} else {
+			$this->createServer();
+		}
 	}
 
 	public function createServer() {
@@ -74,14 +88,43 @@ class Account extends CI_controller {
 		$this->form_validation->set_rules('description', 'Description', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
-			$this->load->view('account/admin/createserver', $data);
+			$this->load->view('account/admin/formserver', $data);
 		} else {
 			if ($this->Account_model->setServer()) {
 				$data['sucess'] = 'Server OK!';
-				$this->load->view('account/admin/createserver', $data);
+				$this->load->view('account/admin/formserver', $data);
 			} else {
 				$data['error'] = 'Error on create server';
-				$this->load->view('account/admin/createserver', $data);
+				$this->load->view('account/admin/formserver', $data);
+			}
+		}
+	}
+
+	public function editServer($id) {
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$data['title_page'] = 'Edit your Server';
+		$data['versions']	= $this->Account_model->getVersion();
+		$data['server'] 	= $this->Account_model->getServer($id);
+
+		$this->form_validation->set_rules('name', 'Name', 'required');
+		$this->form_validation->set_rules('title', 'Title', 'required');
+		$this->form_validation->set_rules('ip', 'IP', 'required');
+		$this->form_validation->set_rules('port', 'Port', 'required');
+		$this->form_validation->set_rules('version', 'Version', 'required');
+		$this->form_validation->set_rules('site', 'Site');
+		$this->form_validation->set_rules('description', 'Description', 'required');
+
+		if ($this->form_validation->run() === FALSE) {
+			$this->load->view('account/admin/formserver/'.$id, $data);
+		} else {
+			if ($this->Account_model->saveServer()) {
+				$data['sucess'] = 'Server OK!';
+				$this->load->view('account/admin/formserver/'.$id, $data);
+			} else {
+				$data['error'] = 'Error on edit server';
+				$this->load->view('account/admin/formserver/'.$id, $data);
 			}
 		}
 	}

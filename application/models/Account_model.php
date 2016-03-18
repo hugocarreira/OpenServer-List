@@ -19,8 +19,6 @@ class Account_model extends CI_Model {
 	}
 
 	public function loginAccount() {
-		
-
 		$data = array(
 			'email'		=> $this->input->post('email'),
 			'password'	=> sha1($this->input->post('password'))
@@ -39,8 +37,10 @@ class Account_model extends CI_Model {
 		// logout function
 	}
 
-	public function setServer() {
+	public function setServer($id) {
+		$id = $this->input->post('id');
 		$data = array(
+			// 'account_id'	=> $this->input->post('account_id'),
 			'name'			=> $this->input->post('name'),
 			'title'			=> $this->input->post('title'),
 			'ip'			=> $this->input->post('ip'),
@@ -50,10 +50,23 @@ class Account_model extends CI_Model {
 			'description'	=> $this->input->post('description')
 		);
 
-		return $this->db->insert('servers', $data);
+		if(isset($id)) {
+			return $this->db->where('id', $id)->update('servers', $data);
+		} else {
+			return $this->db->insert('servers', $data);
+		}
 	}
 
 	public function getVersion() {
 		return $this->db->get('versions')->result();
 	}
+
+	public function getAllServers() {
+		return $this->db->get('servers');
+	}
+
+	public function getServer($id) {
+		return $this->db->where('id', $id)->get('servers');
+	}
+
 }
