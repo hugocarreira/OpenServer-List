@@ -1,2 +1,2 @@
-#ServerList
-study repository
+#OpenTibia-List
+www.opentibialist.com
