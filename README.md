@@ -1,2 +1,2 @@
-#OpenTibia-List
-www.opentibialist.com
+#OpenServer-List
+www.openserverlist.com
