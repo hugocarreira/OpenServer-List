@@ -5,9 +5,6 @@ SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
-CREATE DATABASE `list` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `list`;
-
 DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE `accounts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -19,9 +16,6 @@ CREATE TABLE `accounts` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `accounts` (`id`, `name`, `lastname`, `email`, `password`, `servers`) VALUES
-(1,	'teste',	'teste',	'teste@teste.com',	'2e6f9b0d5885b6010f9167787445617f553a735f',	0),
-(2,	'Hugo',	'Colombo',	'h@h.com',	'27d5482eebd075de44389774fce28c69f45c8a75',	0);
 
 DROP TABLE IF EXISTS `servers`;
 CREATE TABLE `servers` (
@@ -52,4 +46,4 @@ INSERT INTO `versions` (`id`, `version`) VALUES
 (1,	'10.90'),
 (3,	'8.60');
 
--- 2016-02-26 23:53:27
+-- 2016-03-18 21:26:10
