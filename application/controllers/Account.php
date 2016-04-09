@@ -26,8 +26,11 @@ class Account extends CI_controller {
 	    if ($this->form_validation->run() === FALSE) {
 	        $this->load->view('account/create', $data);
 	    } else {
-	        $this->Account_model->setAccount();
-	        echo 'Criado com sucesso';
+	    	if($this->Account_model->setAccount() === TRUE) {
+	        	echo 'Criado com sucesso';
+	    	} else {
+	    		echo 'Erro ao criar conta';
+	    	}
 	    }
 	}
 

@@ -7,6 +7,13 @@ class Account_model extends CI_Model {
 		$this->load->database();
 	}
 
+	public function getAccount($email) {
+		$data = array('email' => $email);
+		$query = $this->db->get_where('accounts', $data);
+
+		return $query->num_rows();
+	}
+
 	public function setAccount() {
 	    $data = array(
 	        'name' 		=> $this->input->post('name'),
@@ -15,7 +22,12 @@ class Account_model extends CI_Model {
 	        'password'	=> sha1($this->input->post('password'))
 	    );
 
-	    return $this->db->insert('accounts', $data);
+	    if($this->getAccount($data['email']) >= 1) {
+	    	return FALSE;
+	    } else {
+	    	$this->db->insert('accounts', $data);
+	    	return TRUE;
+		}
 	}
 
 	public function loginAccount() {
