@@ -9,7 +9,9 @@ class Account extends CI_controller {
 	}
 
 	public function index() {
+		$this->load->view('layout/head');
 		$this->load->view('home');
+		$this->load->view('layout/footer');
 	}
 
 	public function create() {
@@ -18,13 +20,15 @@ class Account extends CI_controller {
 
 	    $data['title'] = 'Create a New Account';
 
-	    $this->form_validation->set_rules('name', 'Name', 'required');
-	    $this->form_validation->set_rules('lastname', 'Lastname', 'required');
-	    $this->form_validation->set_rules('email', 'Email', 'required');
-	    $this->form_validation->set_rules('password', 'Password', 'required');
+	    $this->form_validation->set_rules('name', 'Name');
+	    $this->form_validation->set_rules('lastname', 'Lastname');
+	    $this->form_validation->set_rules('email', 'Email');
+	    $this->form_validation->set_rules('password', 'Password');
 
 	    if ($this->form_validation->run() === FALSE) {
+	    	$this->load->view('layout/head');
 	        $this->load->view('account/create', $data);
+	        $this->load->view('layout/footer');
 	    } else {
 	    	if($this->Account_model->setAccount() === TRUE) {
 	        	echo 'Criado com sucesso';
@@ -44,7 +48,9 @@ class Account extends CI_controller {
 	    $this->form_validation->set_rules('password', 'Password', 'required');
 
 	    if ($this->form_validation->run() === FALSE) {
+	    	$this->load->view('layout/head');
 	    	$this->load->view('account/login', $data);
+	    	$this->load->view('layout/footer');
 	    } else {
 	    	if($this->Account_model->loginAccount() === TRUE) {
 	    		// $this->load->library('session');
@@ -52,10 +58,15 @@ class Account extends CI_controller {
 	    		// $this->session->userdata($session_data);
 	    		$data['title_page'] = 'Account Administration - Home';
 	    		$data['servers'] 	= $this->Account_model->getAllServers();
+
+	    		$this->load->view('layout/head');
 	    		$this->load->view('account/admin/home',$data);
+	    		$this->load->view('layout/footer');
 	    	} else {
 	    		$data['error'] = 'Wrong Login or Password';
+	    		$this->load->view('layout/head');
 	    		$this->load->view('account/login', $data);
+	    		$this->load->view('layout/footer');
 	    	}
 	    }
 	}
@@ -95,10 +106,14 @@ class Account extends CI_controller {
 		} else {
 			if ($this->Account_model->setServer()) {
 				$data['sucess'] = 'Server OK!';
+				$this->load->view('layout/head');
 				$this->load->view('account/admin/formserver', $data);
+	    		$this->load->view('layout/footer');
 			} else {
 				$data['error'] = 'Error on create server';
+				$this->load->view('layout/head');
 				$this->load->view('account/admin/formserver', $data);
+	    		$this->load->view('layout/footer');
 			}
 		}
 	}
@@ -120,14 +135,20 @@ class Account extends CI_controller {
 		$this->form_validation->set_rules('description', 'Description', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
+			$this->load->view('layout/head');
 			$this->load->view('account/admin/formserver/'.$id, $data);
+	    	$this->load->view('layout/footer');
 		} else {
 			if ($this->Account_model->saveServer()) {
 				$data['sucess'] = 'Server OK!';
+				$this->load->view('layout/head');
 				$this->load->view('account/admin/formserver/'.$id, $data);
+	    		$this->load->view('layout/footer');
 			} else {
 				$data['error'] = 'Error on edit server';
+				$this->load->view('layout/head');
 				$this->load->view('account/admin/formserver/'.$id, $data);
+	    		$this->load->view('layout/footer');
 			}
 		}
 	}
