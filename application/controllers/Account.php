@@ -10,7 +10,7 @@ class Account extends CI_controller {
 
 	public function index() {
 		$this->load->view('layout/head');
-		$this->load->view('home');
+		$this->load->view('account/home');
 		$this->load->view('layout/footer');
 	}
 
@@ -18,7 +18,7 @@ class Account extends CI_controller {
 	    $this->load->helper('form');
 	    $this->load->library('form_validation');
 
-	    $data['title'] = 'Create a New Account';
+	    $data['title_page'] = 'Create a New Account';
 
 	    $this->form_validation->set_rules('name', 'Name');
 	    $this->form_validation->set_rules('lastname', 'Lastname');
@@ -56,12 +56,7 @@ class Account extends CI_controller {
 	    		// $this->load->library('session');
 	    		// $session_data = array('email', $data['email']);
 	    		// $this->session->userdata($session_data);
-	    		$data['title_page'] = 'Account Administration - Home';
-	    		$data['servers'] 	= $this->Account_model->getAllServers();
-
-	    		$this->load->view('layout/head');
-	    		$this->load->view('account/admin/home',$data);
-	    		$this->load->view('layout/footer');
+	    		redirect('admin/home');
 	    	} else {
 	    		$data['error'] = 'Wrong Login or Password';
 	    		$this->load->view('layout/head');
@@ -69,87 +64,5 @@ class Account extends CI_controller {
 	    		$this->load->view('layout/footer');
 	    	}
 	    }
-	}
-
-	public function saveServer() {
-		$this->load->helper('form');
-		$this->load->libray('form_validation');
-
-		$id = $this->input->post('id');
-
-		if($id != '') {
-			$this->editServer($id);
-		} else {
-			$this->createServer();
-		}
-	}
-
-	public function createServer() {
-		$this->load->helper('form');
-		$this->load->library('form_validation');
-
-		$data['title_page'] = 'Register Server into System';
-		$data['versions'] 	= $this->Account_model->getVersion();
-
-		// $this->$this->form_validation->set_rules('fieldname', 'fieldlabel', 'trim|required|min_length[5]|max_length[12]');
-
-		$this->form_validation->set_rules('name', 'Name', 'required');
-		$this->form_validation->set_rules('title', 'Title', 'required');
-		$this->form_validation->set_rules('ip', 'IP', 'required');
-		$this->form_validation->set_rules('port', 'Port', 'required');
-		$this->form_validation->set_rules('version', 'Version', 'required');
-		$this->form_validation->set_rules('site', 'Site');
-		$this->form_validation->set_rules('description', 'Description', 'required');
-
-		if ($this->form_validation->run() === FALSE) {
-			$this->load->view('account/admin/formserver', $data);
-		} else {
-			if ($this->Account_model->setServer()) {
-				$data['sucess'] = 'Server OK!';
-				$this->load->view('layout/head');
-				$this->load->view('account/admin/formserver', $data);
-	    		$this->load->view('layout/footer');
-			} else {
-				$data['error'] = 'Error on create server';
-				$this->load->view('layout/head');
-				$this->load->view('account/admin/formserver', $data);
-	    		$this->load->view('layout/footer');
-			}
-		}
-	}
-
-	public function editServer($id) {
-		$this->load->helper('form');
-		$this->load->library('form_validation');
-
-		$data['title_page'] = 'Edit your Server';
-		$data['versions']	= $this->Account_model->getVersion();
-		$data['server'] 	= $this->Account_model->getServer($id);
-
-		$this->form_validation->set_rules('name', 'Name', 'required');
-		$this->form_validation->set_rules('title', 'Title', 'required');
-		$this->form_validation->set_rules('ip', 'IP', 'required');
-		$this->form_validation->set_rules('port', 'Port', 'required');
-		$this->form_validation->set_rules('version', 'Version', 'required');
-		$this->form_validation->set_rules('site', 'Site');
-		$this->form_validation->set_rules('description', 'Description', 'required');
-
-		if ($this->form_validation->run() === FALSE) {
-			$this->load->view('layout/head');
-			$this->load->view('account/admin/formserver/'.$id, $data);
-	    	$this->load->view('layout/footer');
-		} else {
-			if ($this->Account_model->saveServer()) {
-				$data['sucess'] = 'Server OK!';
-				$this->load->view('layout/head');
-				$this->load->view('account/admin/formserver/'.$id, $data);
-	    		$this->load->view('layout/footer');
-			} else {
-				$data['error'] = 'Error on edit server';
-				$this->load->view('layout/head');
-				$this->load->view('account/admin/formserver/'.$id, $data);
-	    		$this->load->view('layout/footer');
-			}
-		}
 	}
 }

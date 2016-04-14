@@ -49,7 +49,22 @@ class Account_model extends CI_Model {
 		// logout function
 	}
 
-	public function setServer($id) {
+	public function setServer() {
+		$data = array(
+			// 'account_id'	=> $this->input->post('account_id'),
+			'name'			=> $this->input->post('name'),
+			'title'			=> $this->input->post('title'),
+			'ip'			=> $this->input->post('ip'),
+			'port'			=> $this->input->post('port'),
+			'version'		=> $this->input->post('version'),
+			'site'			=> $this->input->post('site'),
+			'description'	=> $this->input->post('description')
+		);
+
+		return $this->db->insert('servers', $data);
+	}
+
+	public function editServer($id) {
 		$id = $this->input->post('id');
 		$data = array(
 			// 'account_id'	=> $this->input->post('account_id'),
@@ -62,11 +77,8 @@ class Account_model extends CI_Model {
 			'description'	=> $this->input->post('description')
 		);
 
-		if(isset($id)) {
-			return $this->db->where('id', $id)->update('servers', $data);
-		} else {
-			return $this->db->insert('servers', $data);
-		}
+		return $this->db->where('id', $id)->update('servers', $data);
+		
 	}
 
 	public function getVersion() {
