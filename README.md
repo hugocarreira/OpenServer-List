@@ -1,2 +1,3 @@
 #OpenServer-List
+descontinuado
 
